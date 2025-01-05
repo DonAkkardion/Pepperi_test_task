@@ -1,19 +1,20 @@
 $(document).ready(function () {
-  //Array to store pairs as objects
+  // Array to store pairs as objects
   const nameValuePairs = [];
 
-  // pair validation\creation\display
+  // Pair validation/creation/display
   $("#add-button").click(function () {
     const userInput = $("#manage-input").val().trim();
     const regex = /^([a-zA-Z0-9]+)\s*=\s*([a-zA-Z0-9]+)$/;
-    //validation
+
+    // Validation
     if (regex.test(userInput)) {
       const [, name, value] = userInput.match(regex);
-      //save Pair
+      // Save Pair
       nameValuePairs.push({ name, value });
-      //display
-      updateTextArea(nameValuePairs);
-      //clear field
+      // Update the select element with new pairs
+      updateSelect(nameValuePairs);
+      // Clear input field
       $("#manage-input").val("");
     } else {
       alert("Invalid input!");
@@ -23,53 +24,61 @@ $(document).ready(function () {
   // Sort by Name
   $("#sortByName-button").click(function () {
     nameValuePairs.sort((a, b) => a.name.localeCompare(b.name));
-    updateTextArea(nameValuePairs);
+    updateSelect(nameValuePairs);
   });
 
   // Sort by Value
   $("#sortByValue-button").click(function () {
     nameValuePairs.sort((a, b) => a.value.localeCompare(b.value));
-    updateTextArea(nameValuePairs);
+    updateSelect(nameValuePairs);
   });
 
   // Generate XML
   $("#xml-button").click(function () {
     const xml = generateXML(nameValuePairs);
-    // display the XML
+    // Display the XML
     alert(xml);
   });
 
-  // Delete
+  // Delete selected items
   $("#delete-button").click(function () {
-    // get items
-    const selectedItems = $("#manage-output").val().split("\n");
+    // Get selected items from the select element
+    const selectedItems = $("#manage-output").find(":selected");
 
-    // remove items from array
-    for (const item of selectedItems) {
-      const [name, value] = item.split("=");
+    // Remove selected items from array
+    selectedItems.each(function () {
+      const selectedValue = $(this).val();
+      const [name, value] = selectedValue.split("=");
+
       const index = nameValuePairs.findIndex(
         (pair) => pair.name === name && pair.value === value
       );
 
       if (index !== -1) {
-        // remove object from array
+        // Remove object from array
         nameValuePairs.splice(index, 1);
       }
-    }
+    });
 
-    // update textarea
-    updateTextArea(nameValuePairs);
+    // Update the select element with the remaining items
+    updateSelect(nameValuePairs);
   });
 
-  // update textarea
-  function updateTextArea(list) {
-    const formattedList = list
-      .map((pair) => `${pair.name}=${pair.value}`)
-      .join("\n");
-    $("#manage-output").val(formattedList);
+  // Update select element with new list
+  function updateSelect(list) {
+    const selectElement = $("#manage-output");
+    selectElement.empty(); // Clear the current options
+
+    list.forEach((pair) => {
+      // Create new option for each name/value pair
+      const option = $("<option></option>")
+        .attr("value", `${pair.name}=${pair.value}`)
+        .text(`${pair.name}=${pair.value}`);
+      selectElement.append(option); // Append the option to the select
+    });
   }
 
-  // generate XML
+  // Generate XML
   function generateXML(list) {
     const xmlPairs = list
       .map(
