@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ListManager</title>
+    <link rel="stylesheet" href="/css/common.css" />
+  </head>
+  <body>
+    <div class="manage-window-container">
+      <h1 class="window-title">Test</h1>
+      <div class="add-module">
+        <div class="add-module-input">
+          <p class="add-module-title">Name/Value Pair</p>
+          <input id="manage-input" class="add-module-input-field" />
+        </div>
+        <div class="add-module-buttons">
+          <button id="add-button" class="add-button manage-window-button">
+            Add
+          </button>
+        </div>
+      </div>
+      <div class="list-module">
+        <div class="list-module-head">
+          <p class="list-module-title">Name/Value Pair List</p>
+          <textarea id="manage-output" class="list-module-text"></textarea>
+        </div>
+        <div class="list-module-buttons">
+          <button id="sortByName-button" class="manage-window-button">
+            Sort by Name
+          </button>
+          <button id="sortByValue-button" class="manage-window-button">
+            Sort by Value
+          </button>
+          <button id="delete-button" class="manage-window-button">
+            Delete
+          </button>
+          <button id="xml-button" class="manage-window-button">Show XML</button>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="/js/ListManager.js" type="module"></script>
+  </body>
+</html>
